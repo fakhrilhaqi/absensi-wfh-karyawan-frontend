@@ -11,16 +11,18 @@ function LoginPage() {
     e.preventDefault();
     try {
         const data = await login({ username, password });
+        const payload = JSON.parse(atob(data.access_token.split('.')[1]));
 
         console.log('Login result:', data);
 
-        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('token', data.access_token);   
+        localStorage.setItem('role', payload.role);
+
 
         navigate('/dashboard');
 
         alert('Login successful!');
 
-        console.log(localStorage.getItem('token'));
     } catch (error) {
         alert('Login failed: ' + error.response.data.message);
     }  

@@ -1,5 +1,5 @@
 import {useState, useEffect } from 'react';
-import { createAttendance, getAttendances } from '../api/attendanceApi';
+import { createAttendance , getAttendanceByEmployee } from '../api/attendanceApi';
 
 function AttendancePage() {
     const [employeeId,setEmployeeId] = useState('');
@@ -28,7 +28,9 @@ function AttendancePage() {
     }, []);
 
     const loadAttendances = async () => {
-        const data = await getAttendances();
+        const employeeId = 1; // Replace with the actual employee ID you want to fetch
+        const data = await getAttendanceByEmployee(employeeId);
+        console.log("ATTENDANCE DATA:", data);
         setAttendances(data);
     };
 
@@ -61,7 +63,7 @@ function AttendancePage() {
                 </tr>
             </thead>
             <tbody>
-                {attendances.map((item) => (
+                {Array.isArray(attendances) && attendances.map((item) => (
                     <tr key={item.id}>
                         <td>{item.employeeId}</td>
                         <td>{new Date(item.attendanceDatetime).toLocaleString()}</td>

@@ -9,12 +9,18 @@ function DashboardPage() {
         navigate('/');
     };
 
+    const role = localStorage.getItem('role');
+
     return (
         <div>
             <h1>Dashboard Page</h1>
-            <Link to="/employees">Employee</Link>
-            <Link to="/attendance">Attendance</Link>
-            <button onClick={handleLogout}>Logout</button>
+            
+            {role === 'ADMIN_HRD' && (
+                <><Link to="/employees">Employee</Link><Link to="/attendance-monitoring">Attendance</Link><button onClick={handleLogout}>Logout</button></>
+            )}
+            {role === 'EMPLOYEE' && (
+                <><Link to="/attendance">Attendance</Link><button onClick={handleLogout}>Logout</button></>
+            )}
         </div>
     );
 }

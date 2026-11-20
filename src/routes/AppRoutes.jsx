@@ -3,6 +3,7 @@ import LoginPage from '../pages/LoginPage';
 import EmployeePage from '../pages/EmployeePages';
 import AttendancePage from '../pages/AttendancePage';
 import DashboardPage from '../pages/DashboardPage';
+import AttendanceMonitoringPage from '../pages/AttendanceMonitoringPage';
 
 function AppRoutes() {
   return (
@@ -12,6 +13,7 @@ function AppRoutes() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/employees" element={<EmployeePage />} />
         <Route path="/attendance" element={<AttendancePage />} />
+        <Route path="/attendance-monitoring" element={<AttendanceMonitoringPage />} />
       </Routes>
     </BrowserRouter>
   );
