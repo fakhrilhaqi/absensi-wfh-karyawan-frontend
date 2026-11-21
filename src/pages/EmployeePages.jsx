@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getEmployees, createEmployee } from '../api/employeeApi';
+import { getEmployees, createEmployee , editEmployee } from '../api/employeeApi';
 
 function EmployeePage() {
     const [employees, setEmployees] = useState([]);
@@ -13,6 +13,8 @@ function EmployeePage() {
     const [department, setDepartment] =  useState("");
 
     const [position, setPosition] =  useState("");
+
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
     
     useEffect(() => {
         loadData();
@@ -27,9 +29,42 @@ function EmployeePage() {
     const submitEmployee = async (e) => {
         e.preventDefault(); 
 
-        await createEmployee({ nip, fullName, email, department, position });
+        const employeeData = {
+            nip,
+            fullName,
+            email,
+            department,
+            position
+        };
+        
+        if (selectedEmployee) {
+            // Edit existing employee
+            await editEmployee(selectedEmployee.id, employeeData);
+            alert("Employee updated");
+        } else {
+            // Create new employee
+            await createEmployee(employeeData);
+            alert("Employee created");
+        }
+
         await loadData();
-        alert("Employee created");
+        
+        setSelectedEmployee(null); // Clear selected employee after editing
+        setNip("");
+        setFullName("");
+        setEmail("");
+        setDepartment("");
+        setPosition("");
+
+    };
+
+    const handleEdit = (employee) => {
+        setSelectedEmployee(employee);
+        setNip(employee.nip);   
+        setFullName(employee.fullName);
+        setEmail(employee.email);
+        setDepartment(employee.department);
+        setPosition(employee.position);
     };
     
     
@@ -68,7 +103,7 @@ function EmployeePage() {
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
                 />
-                <button type="submit">Create Employee</button>
+                <button type="submit">{selectedEmployee ? "Update Employee" : "Create Employee"}</button>
             </form>
 
             <table>
@@ -90,6 +125,7 @@ function EmployeePage() {
                         <td>{employee.email}</td>
                         <td>{employee.department}</td>
                         <td>{employee.position}</td>
+                        <td><button onClick={() => handleEdit(employee)}>Edit</button></td>
                     </tr>
                 ))}
             </tbody>
